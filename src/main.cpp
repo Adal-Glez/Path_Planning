@@ -316,11 +316,11 @@ int main() {
           if( too_close == true)
           {
             ref_vel -= .448;//.224;
-            if( (safe_distance > 12) && (ref_vel < 36) )
+            if( (safe_distance > 15) && (ref_vel < 36) )
             {
               safe_distance -=.5; //traffic jam offers small spaces
-              cout << "ref_vel: " << ref_vel ;
-              cout << "Safe Distance: " << safe_distance << endl;
+              //cout << "ref_vel: " << ref_vel ;
+              //cout << "Safe Distance: " << safe_distance << endl;
             }
             if (lane > 0 && left_available) {
               lane -= 1;
@@ -331,17 +331,18 @@ int main() {
             }
             
           }
-          else if( ref_vel <49.5)
+          else if( ref_vel < 49.5)
           {
             ref_vel += .224;
-            if(( safe_distance < 40 )&& (ref_vel > 40 ) )
+            if(( safe_distance < 40 )&& (ref_vel > 45 ) )
             {
               safe_distance +=.5;
-              cout << "ref_vel: " << ref_vel ;
-              cout << "Safe Distance: " << safe_distance << endl;
+              //cout << "ref_vel: " << ref_vel ;
+              //cout << "Safe Distance: " << safe_distance << endl;
             }
           }
-          
+          cout << "ref_vel: " << ref_vel ;
+          cout << "Safe Distance: " << safe_distance << endl;
           
           //---
           
