@@ -1,6 +1,6 @@
 # CarND-Path-Planning-Project
 Self-Driving Car Engineer Nanodegree Program
-   
+
 ### Simulator.
 You can download the Term3 Simulator which contains the Path Planning Project from the [releases tab (https://github.com/udacity/self-driving-car-sim/releases).
 
@@ -59,6 +59,19 @@ the path has processed since last time.
 1. The car uses a perfect controller and will visit every (x,y) point it recieves in the list every .02 seconds. The units for the (x,y) points are in meters and the spacing of the points determines the speed of the car. The vector going from a point to the next point in the list dictates the angle of the car. Acceleration both in the tangential and normal directions is measured along with the jerk, the rate of change of total Acceleration. The (x,y) point paths that the planner recieves should not have a total acceleration that goes over 10 m/s^2, also the jerk should not go over 50 m/s^3. (NOTE: As this is BETA, these requirements might change. Also currently jerk is over a .02 second interval, it would probably be better to average total acceleration over 1 second and measure jerk from that.
 
 2. There will be some latency between the simulator running and the path planner returning a path, with optimized code usually its not very long maybe just 1-3 time steps. During this delay the simulator will continue using points that it was last given, because of this its a good idea to store the last points you have used so you can have a smooth transition. previous_path_x, and previous_path_y can be helpful for this transition since they show the last points given to the simulator controller with the processed points already removed. You would either return a path that extends this previous path or make sure to create a new path that has a smooth transition with this last path.
+
+3. To comply with acceleration and jerk limits a spline was used to generate the trajectory. we increase the adjust the speed gradually to avoid sudden change of the acceleration.
+
+4. To detect and prevent collision, the sensor fusion data about the surrounding vehicles was used to search for any cars in the current lane. and slow down gradually to avoid collision. 
+
+4. Sensor fusion data from car will help determine the action fo the car. Using this information, I measure the distance to the closest car in my lane and when I get too close I would determine whether I should change to left lane, to right lane or stay in lane and slow down.
+
+5. there is a safe distance value of 30m that I decided to be dinamically adjusted, so when the vehicle is in a traffic jam and the spaces are narrower the vehicle can have the chance to move in reduced spaces at reduced speeds
+
+## Improvements  
+. I think there is a lot of room to improve this code, the one that i would lik to explore is to add cost function to determine whcih action is best. for example traffic jams, right now the car is just changing lanes looking at the next immediate lane, but i want to explore far beyond the next lane,  evaluating combinations of lane changes and speed adjustments.
+
+
 
 ## Tips
 

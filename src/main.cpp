@@ -204,9 +204,9 @@ int main() {
   
   // ref velocity to target
   double ref_vel = 0; //mph
+  double safe_distance = 40; //20 , 40
   
-  
-  h.onMessage([&ref_vel,&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy, &lane](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
+  h.onMessage([&safe_distance, &ref_vel,&map_waypoints_x,&map_waypoints_y,&map_waypoints_s,&map_waypoints_dx,&map_waypoints_dy, &lane](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length,
                                                                                                                        uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
@@ -259,7 +259,7 @@ int main() {
           bool too_close = false;
           bool left_available = true;
           bool right_available = true;
-          double safe_distance = 25; //20 , 40
+          
           
           for (int i=0; i<sensor_fusion.size(); i++)
           {
@@ -281,6 +281,7 @@ int main() {
                 //take action
                 //ref_vel =29.5;
                 too_close = true;
+                //std::cout << "SLOWING DOWN" << std::endl;
                 //if(lane >0)
                 //{
                 //  lane=0;
@@ -314,25 +315,30 @@ int main() {
           
           if( too_close == true)
           {
-            ref_vel -= .224;
-            if (safe_distance > 10)
+            ref_vel -= .448;//.224;
+            if( (safe_distance > 12) && (ref_vel < 36) )
             {
-              safe_distance -=.25; //traffic jam offers small spaces
+              safe_distance -=.5; //traffic jam offers small spaces
+              cout << "ref_vel: " << ref_vel ;
+              cout << "Safe Distance: " << safe_distance << endl;
             }
             if (lane > 0 && left_available) {
               lane -= 1;
               
             } else if (lane < 2 && right_available) {
               lane += 1;
+              
             }
             
           }
           else if( ref_vel <49.5)
           {
-            ref_vel += .448;//224;
-            if (safe_distance < 25)
+            ref_vel += .224;
+            if(( safe_distance < 40 )&& (ref_vel > 40 ) )
             {
               safe_distance +=.5;
+              cout << "ref_vel: " << ref_vel ;
+              cout << "Safe Distance: " << safe_distance << endl;
             }
           }
           
